@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Formatter;
 import java.util.Locale;
 
@@ -85,31 +86,28 @@ public class MainActivity extends AppCompatActivity {
 
             //get idm
             byte[] idm = tag.getId();
-            final String idmString = bytesToHexString(idm);
 
             //idm取るだけじゃなくてread,writeしたい場合はtag利用してごにょごにょする
+            NfcReader nfcReader = new NfcReader();
+            byte[][] cardInfo =  nfcReader.readTag(tag);
+            String mid = "";
+            try {
+                mid = new String(cardInfo[0], "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
 
             //親スレッドのUIを更新するためごにょごにょ
             final Handler mainHandler = new Handler(Looper.getMainLooper());
+            String finalInfo = mid;
             mainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    txt01.setText(idmString);
+                    txt01.setText(finalInfo);
                 }
             });
 
         }
     }
 
-    //bytes列を16進数文字列に変換（めんどい）
-    public static String bytesToHexString(byte[] bytes) {
-        StringBuilder sb = new StringBuilder();
-
-        Formatter formatter = new Formatter(sb);
-        for (byte b : bytes) {
-            formatter.format("%02x", b);
-        }
-
-        return sb.toString().toUpperCase(Locale.getDefault());
-    }
 }

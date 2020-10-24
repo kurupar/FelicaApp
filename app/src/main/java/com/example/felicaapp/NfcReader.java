@@ -13,8 +13,8 @@ public class NfcReader {
         NfcF nfc = NfcF.get(tag);
         try {
             nfc.connect();
-            // System 1のシステムコード -> 0xFE00
-            byte[] targetSystemCode = new byte[]{(byte) 0xfe,(byte) 0x00};
+            // System 1のシステムコード -> 0x8E4B
+            byte[] targetSystemCode = new byte[]{(byte) 0x8E,(byte) 0x4B};
 
             // polling コマンドを作成
             byte[] polling = polling(targetSystemCode);
@@ -25,11 +25,11 @@ public class NfcReader {
             // System 0 のIDｍを取得(1バイト目はデータサイズ、2バイト目はレスポンスコード、IDmのサイズは8バイト)
             byte[] targetIDm = Arrays.copyOfRange(pollingRes, 2, 10);
 
-            // サービスに含まれているデータのサイズ(今回は4だった)
-            int size = 4;
+            // サービスに含まれているデータのサイズ(今回は1だった)
+            int size = 1;
 
-            // 対象のサービスコード -> 0x1A8B
-            byte[] targetServiceCode = new byte[]{(byte) 0x1A, (byte) 0x8B};
+            // 対象のサービスコード -> 0x300B
+            byte[] targetServiceCode = new byte[]{(byte) 0x30, (byte) 0x0B};
 
             // Read Without Encryption コマンドを作成
             byte[] req = readWithoutEncryption(targetIDm, size, targetServiceCode);
