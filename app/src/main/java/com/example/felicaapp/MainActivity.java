@@ -3,6 +3,7 @@ package com.example.felicaapp;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Build;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         btn02.setOnClickListener(new View.OnClickListener(){
+            @SuppressLint("SetTextI18n")
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
